@@ -5,6 +5,18 @@ metadata:
   name: {{ include "clickhouse.getResourceName" (dict "app" $app "root" $) | quote }}
 spec:
   configuration:
+    settings:
+      dictionaries_config: config.d/*.dict
+    files:
+      dict_one.dict: |
+        <yandex>
+        <source>
+            <clickhouse>
+                <user></user>
+                <password/>
+            </clickhouse>
+        </source>
+        </yandex>
     zookeeper:
       nodes:
         - host: {{ index $.Values "zookeeper" "nodes" "host" }}
