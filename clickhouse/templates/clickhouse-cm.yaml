@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  custom-clickhouse-config.xml: |+
+    <?xml version="1.0"?>
+    <yandex>
+        <users></users>
+    </yandex>
+
+kind: ConfigMap
+metadata:
+  name: clickhouse-config
+  namespace: default
