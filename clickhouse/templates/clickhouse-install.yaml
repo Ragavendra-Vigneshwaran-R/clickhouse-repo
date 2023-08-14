@@ -12,10 +12,14 @@ spec:
         <yandex>
         <source>
             <clickhouse>
-                <user></user>
+                <host>localhost</host>
+                <port>9000</port>
+                <user/>
                 <password/>
+                <db>system</db>
             </clickhouse>
         </source>
+        </dictionary>
         </yandex>
     zookeeper:
       nodes:
