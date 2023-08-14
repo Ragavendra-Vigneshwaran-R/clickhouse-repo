@@ -28,7 +28,7 @@ spec:
               volumeMounts:
                 - name: {{ include "clickhouse.getResourceName" (dict "app" "clickhouse-storage" "root" $) }}
                   mountPath: /var/lib/clickhouse
-                - mountPath: /etc/clickhouse-server/
+                - mountPath: /etc/clickhouse-server
                   name: custom-config-volume
           volumes:
           - name: custom-config-volume
