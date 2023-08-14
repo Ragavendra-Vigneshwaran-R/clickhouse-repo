@@ -6,9 +6,10 @@ metadata:
 spec:
   configuration:
     users:
-      default/networks/ip: "::/0"
-      default/user: "ragav"
-      default/password: "clickhousepwd"
+      user1/networks/ip: "::/0"
+      user1/user: ragav
+      user1/password: clickhousepwd
+      user1/profile: default
     zookeeper:
       nodes:
         - host: {{ index $.Values "zookeeper" "nodes" "host" }}
