@@ -25,7 +25,7 @@ clickhouse:
   volumeClaimTemplates:
     name: clickhouse-storage
     spec:
-      storageClassName: ca3s-ebs-csi
+      storageClassName: default
       accessModes: ReadWriteOnce
       resources:
         requests:

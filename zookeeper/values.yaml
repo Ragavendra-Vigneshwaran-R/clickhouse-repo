@@ -50,7 +50,7 @@ zookeeper:
     runAsUser: 1000
     fsGroup: 1000
   volumeClaimTemplates:
-    storageClassName: ca3s-ebs-csi
+    storageClassName: default
     resources:
       requests:
         storage: 10Gi 
