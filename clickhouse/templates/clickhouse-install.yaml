@@ -6,8 +6,7 @@ metadata:
 spec:
   configuration:
     users:
-      default/user:
-      default/password:
+      default/password: "clickhouse-pwd"
     zookeeper:
       nodes:
         - host: {{ index $.Values "zookeeper" "nodes" "host" }}
