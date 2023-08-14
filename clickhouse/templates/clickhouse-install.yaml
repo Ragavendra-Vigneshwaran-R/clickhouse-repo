@@ -6,7 +6,6 @@ metadata:
 spec:
   configuration:
     users:
-    users:
       default/user: ''
       default/password: ''
     zookeeper:
