@@ -1,0 +1,56 @@
+service:
+  client-svc:
+    ports:
+      - port: 2181
+        name: client
+      - port: 7000
+        name: prometheus
+  sts-svc:
+    ports:
+      - port: 2888
+        name: server
+      - port: 3888
+        name: leader-election
+
+zookeeper:
+  replicas: 3
+  type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  annotations:
+    prometheus.io/port: '7000'
+    prometheus.io/scrape: 'true'
+  image:
+    imagePullPolicy: IfNotPresent
+    imageID: "docker.io/zookeeper:3.8.1"
+  resources:
+    requests:
+      memory: "512M"
+      cpu: "1"
+    limits:
+      memory: "2Gi"
+      cpu: "2"
+  ports:
+    - containerPort: 2181
+      name: client
+    - containerPort: 2888
+      name: server
+    - containerPort: 3888
+      name: leader-election
+    - containerPort: 7000
+      name: prometheus
+  readinessProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 60
+    timeoutSeconds: 60
+  livenessProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    timeoutSeconds: 5
+  securityContext:
+    runAsUser: 1000
+    fsGroup: 1000
+  volumeClaimTemplates:
+    storageClassName: ca3s-ebs-csi
+    resources:
+      requests:
+        storage: 10Gi 

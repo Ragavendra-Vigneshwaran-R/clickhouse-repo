@@ -1,0 +1,10 @@
+{{- $app:= "zookeeper" -}}
+apiVersion: {{ include "pdb.apiVersion" $ }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "zookeeper.getResourceName" (dict "app" "zookeeper-pod-disruption-budget" "root" $) }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+  maxUnavailable: 1

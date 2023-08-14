@@ -1,0 +1,30 @@
+{{- $app:= "zookeeper" -}}
+{{- $svcName:= "zookeepers" -}}
+# Setup Service to provide access to Zookeeper for clients
+apiVersion: {{ include "service.apiVersion" $ }}
+kind: Service
+metadata:
+  name: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+  labels:
+    app: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+spec:
+  ports:
+{{ toYaml (index $.Values "service" "client-svc" "ports") | indent 4 }}
+  selector:
+    app: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+    what: node
+---
+# Setup Headless Service for StatefulSet
+apiVersion: {{ include "service.apiVersion" $ }}
+kind: Service
+metadata:
+  name: {{ include "zookeeper.getResourceName" (dict "app" $svcName "root" $) }}
+  labels:
+    app: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+spec:
+  ports:
+{{ toYaml (index $.Values "service" "sts-svc" "ports") | indent 4 }}
+  clusterIP: None
+  selector:
+    app: {{ include "zookeeper.getResourceName" (dict "app" $app "root" $) }}
+    what: node

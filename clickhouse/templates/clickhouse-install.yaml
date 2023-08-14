@@ -1,0 +1,39 @@
+{{- $app:= "clickhouse" -}}
+apiVersion: {{ include "clickhouseinstallation.apiVersion" $ | quote }}
+kind: "ClickHouseInstallation"
+metadata:
+  name: {{ include "clickhouse.getResourceName" (dict "app" $app "root" $) | quote }}
+spec:
+  configuration:
+    zookeeper:
+      nodes:
+        - host: {{ index $.Values "zookeeper" "nodes" "host" }}
+          port: {{ index $.Values "zookeeper" "nodes" "port" }}
+    clusters:
+      - name: {{ index $.Values $app "clusters" "name" }}
+        templates:
+          podTemplate: {{ index $.Values $app "clusters" "templates" "podTemplate" }}
+        layout:
+          shardsCount: {{ index $.Values $app "clusters" "layout" "shardsCount" }}
+          replicasCount: {{ index $.Values $app "clusters" "layout" "replicasCount" }}
+  templates:
+    podTemplates:
+      - name: {{ index $.Values $app "clusters" "templates" "podTemplate" }}
+        spec:
+          containers:
+            - name: {{ index $.Values $app "clusters" "templates" "podTemplate" }}
+              image: {{ index $.Values $app "image" "registry" }}/{{ index $.Values $app "image" "imageName" }}:{{ index $.Values $app "image" "imageTag" }}
+              resources:
+{{ toYaml (index $.Values $app "resources") | indent 16 }}
+              volumeMounts:
+                - name: {{ include "clickhouse.getResourceName" (dict "app" "clickhouse-storage" "root" $) }}
+                  mountPath: /var/lib/clickhouse
+    volumeClaimTemplates:
+      - name: {{ index $.Values $app "volumeClaimTemplates" "name" }}
+        spec:
+          storageClassName: {{ index $.Values $app "volumeClaimTemplates" "spec" "storageClassName" }}
+          accessModes:
+            - {{ index $.Values $app "volumeClaimTemplates" "spec" "accessModes" }}
+          resources:
+            requests:
+              storage: {{ index $.Values $app "volumeClaimTemplates" "spec" "resources" "requests" "storage" }}

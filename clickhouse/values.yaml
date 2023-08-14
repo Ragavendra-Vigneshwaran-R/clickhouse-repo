@@ -1,0 +1,32 @@
+zookeeper:
+  nodes:
+    host: zookeeper.zoo-keeper
+    port: 2181
+
+clickhouse:
+  image:
+    registry: clickhouse
+    imageName: clickhouse-server
+    imageTag: 23.7
+  clusters:
+    name: dev-cluster
+    templates:
+      podTemplate: clickhouse-pod
+    layout:
+      shardsCount: 1
+      replicasCount: 1
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  volumeClaimTemplates:
+    name: clickhouse-storage
+    spec:
+      storageClassName: ca3s-ebs-csi
+      accessModes: ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Gi
